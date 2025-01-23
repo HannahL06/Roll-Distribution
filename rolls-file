@@ -1,0 +1,62 @@
+import random
+from user_input import get_integer
+
+# Simulates rolling 3 dice and writes the results to a file
+def die_roll(rolls_file, rolls):
+    for toss in range(rolls):
+        roll_result = 0
+        for die in range(3):
+            rand_num = random.randint(1, 6)
+            roll_result += rand_num
+        rolls_file.write(str(roll_result) + '\n')
+
+# Reads through the file to calculate result frequencies
+def data_read(rolls_file):
+    roll_freq = [0] * 16 # each index corresponds to a possible roll result, numbers 3-18
+    for line in rolls_file.readlines():
+        if line.strip() == '':
+            break
+        else:
+            result = int(line) - 3
+            roll_freq[result] += 1
+    return roll_freq
+
+# Calculates and displays the result distribution
+def show_results(roll_freq):
+    print('Roll Result  Count')
+    for i in range(16):
+        print(f" \t  \t {i + 3} : {roll_freq[i]}")
+    max_index = roll_freq.index(max(roll_freq))
+    min_index = roll_freq.index(min(roll_freq))
+    avg_freq = float(sum(roll_freq) / len(roll_freq))
+    print(f'the result with the maximum frequency is {max_index + 3} with {max(roll_freq)} rolls')
+    print(f'the result with the minimum frequency is {min_index + 3} with {min(roll_freq)} rolls')
+    print(f'the average frequency is {avg_freq}')
+
+user_file = input('Please enter the name of a file to be used:  ')
+while True:
+  try:
+    rolls = int(input('How many times, between 200 and 2000, would you like to roll the three dice?  '))
+    if rolls < 200 or rolls > 2000:
+      print('Invalid amount. Try again')
+      continue
+    else:
+      break
+  except ValueError:
+    print('Invalid amount. Try again')
+    continue
+while True:
+  try:
+    roll_result = 0
+    count = 0
+    with open(user_file, 'w') as rolls_file:
+      die_roll(rolls_file, rolls)
+  
+    with open(user_file, 'r') as rolls_file:
+      frequencies = data_read(rolls_file)
+    break
+  except FileNotFoundError:
+    print('This file was not found.')
+    continue
+
+show_results(frequencies)
