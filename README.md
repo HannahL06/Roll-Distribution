@@ -1,3 +1,2 @@
-# die-distribution
-This program simulates rolling three die.
-It then calculates the frequency distribution of the rolls results.
+# Roll-Distribution
+This program simulates rolling three dice. It then calculates the frequencies of each result of the die. The minimum, maximum, and average frequencies are calculated.
